@@ -39,6 +39,7 @@ module Control.Monad.Random (
     evalRandIO,
     fromList,
     uniform,
+    uniformMay,
     Rand, RandT, -- but not the data constructors
     -- * Special lift functions
     liftRand,
