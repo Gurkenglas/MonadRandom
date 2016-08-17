@@ -69,7 +69,7 @@ import           Control.Monad.Writer.Class
 import qualified Control.Monad.Writer.Lazy    as WL
 import qualified Control.Monad.Writer.Strict  as WS
 import           Data.Monoid                  (Monoid)
-import           Data.Foldable                (toList, Foldable)
+import qualified Data.Foldable                as F
 import           System.Random
 
 -- | A monad transformer which adds a random number generator to an
@@ -136,8 +136,8 @@ evalRandIO x = fmap (evalRand x) newStdGen
 
 -- | Sample a random value from a weighted Foldable. The total weight of all
 -- elements must not be 0.
-fromList :: (Foldable t, MonadRandom m) => t (a,Rational) -> m a
-fromList = fromList' . toList where
+fromList :: (F.Foldable t, MonadRandom m) => t (a,Rational) -> m a
+fromList = fromList' . F.toList where
   fromList' [] = error "MonadRandom.fromList called with empty list"
   fromList' [(x,_)] = return x
   fromList' xs = do
@@ -149,12 +149,12 @@ fromList = fromList' . toList where
     return . fst . head $ dropWhile (\(_,q) -> q < p) cs
 
 -- | Sample a value from a uniform distribution of a Foldable of elements.
-uniform :: (Foldable t, MonadRandom m) => t a -> m a
-uniform = fromList . fmap (flip (,) 1) . toList
+uniform :: (F.Foldable t, MonadRandom m) => t a -> m a
+uniform = fromList . fmap (flip (,) 1) . F.toList
 
 -- | Sample a value from a uniform distribution of a Foldable of elements if it is not empty.
-uniformMay :: (Foldable t, MonadRandom m) => t a -> m (Maybe a)
-uniformMay xs = if null xs
+uniformMay :: (F.Foldable t, MonadRandom m) => t a -> m (Maybe a)
+uniformMay xs = if F.null xs
   then return Nothing
   else liftM Just (uniform xs)
 
