@@ -154,7 +154,7 @@ uniform = fromList . fmap (flip (,) 1) . F.toList
 
 -- | Sample a value from a uniform distribution of a Foldable of elements if it is not empty.
 uniformMay :: (F.Foldable t, MonadRandom m) => t a -> m (Maybe a)
-uniformMay xs = if F.null xs
+uniformMay xs = if foldr (\_ _ -> False) True xs
   then return Nothing
   else liftM Just (uniform xs)
 
