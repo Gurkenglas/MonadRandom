@@ -69,7 +69,7 @@ import           Control.Monad.Writer.Class
 import qualified Control.Monad.Writer.Lazy    as WL
 import qualified Control.Monad.Writer.Strict  as WS
 import           Data.Monoid                  (Monoid)
-import           Data.Foldable
+import           Data.Foldable                (toList)
 import           System.Random
 
 -- | A monad transformer which adds a random number generator to an
