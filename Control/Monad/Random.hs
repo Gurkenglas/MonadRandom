@@ -69,6 +69,7 @@ import           Control.Monad.Writer.Class
 import qualified Control.Monad.Writer.Lazy    as WL
 import qualified Control.Monad.Writer.Strict  as WS
 import           Data.Monoid                  (Monoid)
+import           Data.Foldable
 import           System.Random
 
 -- | A monad transformer which adds a random number generator to an
@@ -149,7 +150,7 @@ fromList = fromList' . toList where
 
 -- | Sample a value from a uniform distribution of a Foldable of elements.
 uniform :: (Foldable t, MonadRandom m) => t a -> m a
-uniform = fromList . fmap (flip (,) 1)
+uniform = fromList . fmap (flip (,) 1) . toList
 
 -- | Sample a value from a uniform distribution of a Foldable of elements if it is not empty.
 uniformMay :: (Foldable t, MonadRandom m) => t a -> m (Maybe a)
